@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temporizadores de Corrida</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #070975;
+            color: white;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .logo {
+            height: 45px;
+        }
+        
+        .sound-toggle {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .sound-toggle:hover {
+            transform: scale(1.1);
+        }
+        
+        .timers-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .timer-container {
+            width: 200px;
+            height: 220px;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+        
+        .timer-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .edit-btn {
+            background: transparent;
+        
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .edit-btn:hover {
+            color: white;
+            transform: scale(1.2);
+        }
+        
+        .timer-display {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            min-width: 40px;
+            transition: all 0.2s;
+        }
+        
+        button:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Porsche - Vermelho e Preto */
+        .porsche {
+            background: linear-gradient(135deg, #000000, #000000);
+        }
+        
+        .porsche button {
+            background-color: #000000;
+            color: #d50000;
+        }
+        
+        /* Ferrari - Vermelho e Amarelo */
+        .ferrari {
+            background: linear-gradient(135deg, #0c0b0b, #000000);
+        }
+        
+        .ferrari button {
+            background-color: #000000;
+            color: #ffd700;
+        }
+        
+        /* Mercedes - Prata e Azul Petróleo */
+        .mercedes {
+            background: linear-gradient(135deg, #000000, #000000);
+        }
+        
+        .mercedes button {
+            background-color: #000000;
+            color: #00d2be;
+        }
+        
+        /* Modal de Alarme */
+        .alarm-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .alarm-content {
+            background-color: rgba(255, 0, 0, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            animation: pulse 1s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+        
+        /* Modal de Edição */
+        .edit-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .edit-content {
+            background-color: rgba(26, 26, 94, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            width: 300px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .edit-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .edit-form input {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background-color: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 16px;
+        }
+        
+        .edit-form button {
+            margin-top: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        
+        .edit-form button:first-of-type {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .edit-form button:last-of-type {
+            background-color: #f44336;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Cabeçalho com logo e controle de som -->
+    <div class="header">
+        <img src="logo.png" alt="Logo" class="logo">
+        <button class="sound-toggle" id="soundToggle" onclick="toggleSound()">
+            <i class="fas fa-volume-up"></i>
+        </button>
+    </div>
+    
+    <!-- Temporizadores -->
+    <div class="timers-row">
+        <!-- Temporizador Porsche -->
+        <div class="timer-container porsche">
+            <div class="timer-title">
+                <span id="porsche-name">PORSCHE</span>
+                <button class="edit-btn" onclick="openEdit('porsche')">
+                    <i class="far fa-edit"></i>
+                </button>
+            </div>
+            <div class="timer-display" id="porsche-timer">03:00</div>
+            <div class="buttons">
+                <button onclick="startTimer('porsche')">▶</button>
+                <button onclick="pauseTimer('porsche')">⏸</button>
+                <button onclick="resetTimer('porsche')">↻</button>
+            </div>
+        </div>
+        
+        <!-- Temporizador Ferrari -->
+        <div class="timer-container ferrari">
+            <div class="timer-title">
+                <span id="ferrari-name">FERRARI</span>
+                <button class="edit-btn" onclick="openEdit('ferrari')">
+                    <i class="far fa-edit"></i>
+                </button>
+            </div>
+            <div class="timer-display" id="ferrari-timer">03:00</div>
+            <div class="buttons">
+                <button onclick="startTimer('ferrari')">▶</button>
+                <button onclick="pauseTimer('ferrari')">⏸</button>
+                <button onclick="resetTimer('ferrari')">↻</button>
+            </div>
+        </div>
+        
+        <!-- Temporizador Mercedes -->
+        <div class="timer-container mercedes">
+            <div class="timer-title">
+                <span id="mercedes-name">MERCEDES</span>
+                <button class="edit-btn" onclick="openEdit('mercedes')">
+                    <i class="far fa-edit"></i>
+                </button>
+            </div>
+            <div class="timer-display" id="mercedes-timer">03:00</div>
+            <div class="buttons">
+                <button onclick="startTimer('mercedes')">▶</button>
+                <button onclick="pauseTimer('mercedes')">⏸</button>
+                <button onclick="resetTimer('mercedes')">↻</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de Alarme -->
+    <div id="alarmModal" class="alarm-modal">
+        <div class="alarm-content">
+            <h2 id="alarm-message">TEMPO ESGOTADO!</h2>
+            <button onclick="stopAlarm()" style="padding: 10px 20px; font-size: 16px; background: white; color: black; border: none; border-radius: 5px; cursor: pointer;">OK</button>
+        </div>
+    </div>
+    
+    <!-- Modal de Edição -->
+    <div id="editModal" class="edit-modal">
+        <div class="edit-content">
+            <h2>Editar Temporizador</h2>
+            <div class="edit-form">
+                <input type="text" id="edit-name" placeholder="Nome">
+                <input type="number" id="edit-minutes" placeholder="Minutos" min="1" max="60">
+                <button onclick="saveEdit()">Salvar</button>
+                <button onclick="closeEdit()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Áudio para o alerta sonoro -->
+    <audio id="alarm-sound" preload="auto">
+        <source src="alarm.mp3" type="audio/mpeg">
+        Seu navegador não suporta o elemento de áudio.
+    </audio>
+    
+    <script>
+        const timers = {
+            porsche: { 
+                name: "PORSCHE",
+                time: 180, 
+                interval: null, 
+                isRunning: false 
+            },
+            ferrari: { 
+                name: "FERRARI",
+                time: 180, 
+                interval: null, 
+                isRunning: false 
+            },
+            mercedes: { 
+                name: "MERCEDES",
+                time: 180, 
+                interval: null, 
+                isRunning: false 
+            }
+        };
+        
+        let currentEditing = null;
+        let alarmActive = false;
+        let soundEnabled = true;
+        
+        // Alternar som
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const icon = document.querySelector('#soundToggle i');
+            if (soundEnabled) {
+                icon.classList.remove('fa-volume-mute');
+                icon.classList.add('fa-volume-up');
+            } else {
+                icon.classList.remove('fa-volume-up');
+                icon.classList.add('fa-volume-mute');
+                // Se estiver tocando, para o som
+                if (alarmActive) {
+                    document.getElementById('alarm-sound').pause();
+                }
+            }
+        }
+        
+        // Abre o modal de edição
+        function openEdit(brand) {
+            if (alarmActive) return;
+            currentEditing = brand;
+            document.getElementById('edit-name').value = timers[brand].name;
+            document.getElementById('edit-minutes').value = timers[brand].time / 60;
+            document.getElementById('editModal').style.display = 'flex';
+        }
+        
+        // Fecha o modal de edição
+        function closeEdit() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+        
+        // Salva as edições
+        function saveEdit() {
+            const name = document.getElementById('edit-name').value.toUpperCase();
+            const minutes = parseInt(document.getElementById('edit-minutes').value);
+            
+            if (name && minutes > 0) {
+                timers[currentEditing].name = name;
+                timers[currentEditing].time = minutes * 60;
+                
+                document.getElementById(`${currentEditing}-name`).textContent = name;
+                document.getElementById(`${currentEditing}-timer`).textContent = 
+                    `${minutes.toString().padStart(2, '0')}:00`;
+                
+                closeEdit();
+            }
+        }
+        
+        // Para o alarme
+        function stopAlarm() {
+            if (soundEnabled) {
+                const alarm = document.getElementById('alarm-sound');
+                alarm.pause();
+                alarm.currentTime = 0;
+            }
+            document.getElementById('alarmModal').style.display = 'none';
+            alarmActive = false;
+        }
+        
+        function startTimer(brand) {
+            if (timers[brand].isRunning || alarmActive) return;
+            
+            timers[brand].isRunning = true;
+            timers[brand].interval = setInterval(() => {
+                timers[brand].time--;
+                
+                const minutes = Math.floor(timers[brand].time / 60);
+                const seconds = timers[brand].time % 60;
+                
+                document.getElementById(`${brand}-timer`).textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timers[brand].time <= 0) {
+                    clearInterval(timers[brand].interval);
+                    timers[brand].isRunning = false;
+                    
+                    // Mostra o modal de alarme
+                    document.getElementById('alarm-message').textContent = `${timers[brand].name} - TEMPO ESGOTADO!`;
+                    document.getElementById('alarmModal').style.display = 'flex';
+                    alarmActive = true;
+                    
+                    // Toca o som de alarme se estiver habilitado
+                    if (soundEnabled) {
+                        const alarm = document.getElementById('alarm-sound');
+                        alarm.currentTime = 0;
+                        alarm.loop = true;
+                        alarm.play().catch(e => console.log("Erro ao reproduzir som:", e));
+                    }
+                }
+            }, 1000);
+        }
+        
+        function pauseTimer(brand) {
+            if (timers[brand].isRunning && !alarmActive) {
+                clearInterval(timers[brand].interval);
+                timers[brand].isRunning = false;
+            }
+        }
+        
+        function resetTimer(brand) {
+            if (alarmActive) return;
+            clearInterval(timers[brand].interval);
+            const minutes = Math.floor(timers[brand].time / 60);
+            timers[brand].isRunning = false;
+            timers[brand].interval = null;
+            document.getElementById(`${brand}-timer`).textContent = 
+                `${minutes.toString().padStart(2, '0')}:00`;
+        }
+    </script>
+</body>
+</html>
