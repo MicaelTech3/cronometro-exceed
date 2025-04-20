@@ -10,33 +10,69 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #070975;
+            background-color: #020470;
             color: white;
         }
         
-        .header {
+        .header-container {
             display: flex;
-            justify-content: center;
-            margin-bottom: 30px;
+            flex-direction: column;
             align-items: center;
-            gap: 20px;
+            margin-bottom: 20px;
         }
         
         .logo {
             height: 45px;
+            margin-bottom: 15px;
         }
         
-        .sound-toggle {
-            background: transparent;
+        /* Botões de navegação */
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+        
+        .nav-button {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
             border: none;
-            color: white;
-            font-size: 1.5rem;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
         }
         
-        .sound-toggle:hover {
-            transform: scale(1.1);
+        .nav-button.active {
+            background-color: #0036e6;
+            transform: scale(1.05);
+        }
+        
+        .nav-button:hover:not(.active) {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .floors-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .floor {
+            background-color: #020470(0, 8, 119, 0.952);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .floor-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #fff;
+            text-align: center;
         }
         
         .timers-row {
@@ -58,6 +94,47 @@
             flex-direction: column;
             justify-content: space-between;
             position: relative;
+            transition: all 0.3s;
+        }
+        
+        .timer-container.maximized {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            z-index: 300;
+            font-size: 1.5rem;
+        }
+        
+        .maximize-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+        
+        .maximize-btn:hover {
+            color: white;
+            transform: scale(1.2);
+        }
+        
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 250;
         }
         
         .timer-title {
@@ -72,7 +149,6 @@
         
         .edit-btn {
             background: transparent;
-        
             color: rgba(255, 255, 255, 0.7);
             cursor: pointer;
             font-size: 0.9rem;
@@ -88,6 +164,11 @@
             font-size: 3rem;
             font-weight: bold;
             margin: 10px 0;
+            transition: all 0.3s;
+        }
+        
+        .timer-container.maximized .timer-display {
+            font-size: 5rem;
         }
         
         .buttons {
@@ -110,35 +191,48 @@
             transform: scale(1.05);
         }
         
-        /* Porsche - Vermelho e Preto */
-        .porsche {
-            background: linear-gradient(135deg, #000000, #000000);
+        /* Controle de som */
+        .sound-control {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
         }
         
-        .porsche button {
-            background-color: #000000;
-            color: #d50000;
+        .sound-toggle {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
         }
         
-        /* Ferrari - Vermelho e Amarelo */
-        .ferrari {
-            background: linear-gradient(135deg, #0c0b0b, #000000);
+        .sound-toggle:hover {
+            transform: scale(1.1);
         }
         
-        .ferrari button {
-            background-color: #000000;
-            color: #ffd700;
-        }
+        /* Cores dos temporizadores */
+        .porsche { background: linear-gradient(135deg, #000000, #000000); }
+        .porsche button { background-color: #000000; color: #d50000; }
         
-        /* Mercedes - Prata e Azul Petróleo */
-        .mercedes {
-            background: linear-gradient(135deg, #000000, #000000);
-        }
+        .ferrari { background: linear-gradient(135deg, #0c0b0b, #000000); }
+        .ferrari button { background-color: #000000; color: #ffd700; }
         
-        .mercedes button {
-            background-color: #000000;
-            color: #00d2be;
-        }
+        .mercedes { background: linear-gradient(135deg, #000000, #000000); }
+        .mercedes button { background-color: #000000; color: #00d2be; }
+        
+        /* PlayStation */
+        .ps1 { background: linear-gradient(135deg, #010407, #000000); }
+        .ps1 button { background-color: #000000; color: rgb(40, 241, 0); }
+        
+        .ps2 { background: linear-gradient(135deg, #000000, #000000); }
+        .ps2 button { background-color: #000000; color: rgb(196, 0, 0); }
+        
+        .ps3 { background: linear-gradient(135deg, #000000, #08030e); }
+        .ps3 button { background-color: #010102; color: rgb(179, 255, 3); }
+        
+        .ps4 { background: linear-gradient(135deg, #000000, #000000); }
+        .ps4 button { background-color: #000000; color: rgb(0, 247, 255); }
         
         /* Modal de Alarme */
         .alarm-modal {
@@ -182,7 +276,7 @@
         }
         
         .edit-content {
-            background-color: rgba(26, 26, 94, 0.9);
+            background-color: rgba(0, 0, 0, 0.9);
             padding: 25px;
             border-radius: 15px;
             width: 300px;
@@ -199,7 +293,7 @@
         .edit-form input {
             padding: 10px;
             border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgb(0, 0, 0);
             background-color: rgba(0, 0, 0, 0.3);
             color: white;
             font-size: 16px;
@@ -223,63 +317,192 @@
     </style>
 </head>
 <body>
-    <!-- Cabeçalho com logo e controle de som -->
-    <div class="header">
+    <!-- Cabeçalho com logo -->
+    <div class="header-container">
         <img src="logo.png" alt="Logo" class="logo">
+    </div>
+    
+    <!-- Botões de navegação -->
+    <div class="nav-buttons">
+        <button class="nav-button active" onclick="showFloor('terreo')">TÉRREO</button>
+        <button class="nav-button" onclick="showFloor('ps5')">ARENAS PS5</button>
+    </div>
+    
+    <!-- Overlay para quando um timer estiver maximizado -->
+    <div class="overlay" id="overlay"></div>
+    
+    <!-- Andares -->
+    <div class="floors-container">
+        <!-- Térreo -->
+        <div id="terreo-floor" class="floor">
+            <div class="floor-title">TÉRREO</div>
+            <div class="timers-row">
+                <!-- Avião -->
+                <div class="timer-container ps1" id="aviao-container">
+                    <button class="maximize-btn" onclick="toggleMaximize('aviao')">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                    <div class="timer-title">
+                        <span id="aviao-name">AVIÃO</span>
+                        <button class="edit-btn" onclick="openEdit('aviao')">
+                            <i class="far fa-edit"></i>
+                        </button>
+                    </div>
+                    <div class="timer-display" id="aviao-timer">05:00</div>
+                    <div class="buttons">
+                        <button onclick="startTimer('aviao')">▶</button>
+                        <button onclick="pauseTimer('aviao')">⏸</button>
+                        <button onclick="resetTimer('aviao')">↻</button>
+                    </div>
+                </div>
+                
+                <!-- Temporizador Porsche -->
+                <div class="timer-container porsche" id="porsche-container">
+                    <button class="maximize-btn" onclick="toggleMaximize('porsche')">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                    <div class="timer-title">
+                        <span id="porsche-name">PORSCHE</span>
+                        <button class="edit-btn" onclick="openEdit('porsche')">
+                            <i class="far fa-edit"></i>
+                        </button>
+                    </div>
+                    <div class="timer-display" id="porsche-timer">03:00</div>
+                    <div class="buttons">
+                        <button onclick="startTimer('porsche')">▶</button>
+                        <button onclick="pauseTimer('porsche')">⏸</button>
+                        <button onclick="resetTimer('porsche')">↻</button>
+                    </div>
+                </div>
+                
+                <!-- Temporizador Ferrari -->
+                <div class="timer-container ferrari" id="ferrari-container">
+                    <button class="maximize-btn" onclick="toggleMaximize('ferrari')">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                    <div class="timer-title">
+                        <span id="ferrari-name">FERRARI</span>
+                        <button class="edit-btn" onclick="openEdit('ferrari')">
+                            <i class="far fa-edit"></i>
+                        </button>
+                    </div>
+                    <div class="timer-display" id="ferrari-timer">03:00</div>
+                    <div class="buttons">
+                        <button onclick="startTimer('ferrari')">▶</button>
+                        <button onclick="pauseTimer('ferrari')">⏸</button>
+                        <button onclick="resetTimer('ferrari')">↻</button>
+                    </div>
+                </div>
+                
+                <!-- Temporizador Mercedes -->
+                <div class="timer-container mercedes" id="mercedes-container">
+                    <button class="maximize-btn" onclick="toggleMaximize('mercedes')">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                    <div class="timer-title">
+                        <span id="mercedes-name">MERCEDES</span>
+                        <button class="edit-btn" onclick="openEdit('mercedes')">
+                            <i class="far fa-edit"></i>
+                        </button>
+                    </div>
+                    <div class="timer-display" id="mercedes-timer">03:00</div>
+                    <div class="buttons">
+                        <button onclick="startTimer('mercedes')">▶</button>
+                        <button onclick="pauseTimer('mercedes')">⏸</button>
+                        <button onclick="resetTimer('mercedes')">↻</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Arenas PS5 -->
+        <div id="ps5-floor" class="floor" style="display: none;">
+            <div class="floor-title">ARENAS PS5</div>
+            <div class="timers-row">
+                <!-- PS1 -->
+                <div class="timer-container ps1" id="ps1-container">
+                    <button class="maximize-btn" onclick="toggleMaximize('ps1')">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                    <div class="timer-title">
+                        <span id="ps1-name">PS1</span>
+                        <button class="edit-btn" onclick="openEdit('ps1')">
+                            <i class="far fa-edit"></i>
+                        </button>
+                    </div>
+                    <div class="timer-display" id="ps1-timer">10:00</div>
+                    <div class="buttons">
+                        <button onclick="startTimer('ps1')">▶</button>
+                        <button onclick="pauseTimer('ps1')">⏸</button>
+                        <button onclick="resetTimer('ps1')">↻</button>
+                    </div>
+                </div>
+                
+                <!-- PS2 -->
+                <div class="timer-container ps2" id="ps2-container">
+                    <button class="maximize-btn" onclick="toggleMaximize('ps2')">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                    <div class="timer-title">
+                        <span id="ps2-name">PS2</span>
+                        <button class="edit-btn" onclick="openEdit('ps2')">
+                            <i class="far fa-edit"></i>
+                        </button>
+                    </div>
+                    <div class="timer-display" id="ps2-timer">10:00</div>
+                    <div class="buttons">
+                        <button onclick="startTimer('ps2')">▶</button>
+                        <button onclick="pauseTimer('ps2')">⏸</button>
+                        <button onclick="resetTimer('ps2')">↻</button>
+                    </div>
+                </div>
+                
+                <!-- PS3 -->
+                <div class="timer-container ps3" id="ps3-container">
+                    <button class="maximize-btn" onclick="toggleMaximize('ps3')">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                    <div class="timer-title">
+                        <span id="ps3-name">PS3</span>
+                        <button class="edit-btn" onclick="openEdit('ps3')">
+                            <i class="far fa-edit"></i>
+                        </button>
+                    </div>
+                    <div class="timer-display" id="ps3-timer">10:00</div>
+                    <div class="buttons">
+                        <button onclick="startTimer('ps3')">▶</button>
+                        <button onclick="pauseTimer('ps3')">⏸</button>
+                        <button onclick="resetTimer('ps3')">↻</button>
+                    </div>
+                </div>
+                
+                <!-- PS4 -->
+                <div class="timer-container ps4" id="ps4-container">
+                    <button class="maximize-btn" onclick="toggleMaximize('ps4')">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                    <div class="timer-title">
+                        <span id="ps4-name">PS4</span>
+                        <button class="edit-btn" onclick="openEdit('ps4')">
+                            <i class="far fa-edit"></i>
+                        </button>
+                    </div>
+                    <div class="timer-display" id="ps4-timer">10:00</div>
+                    <div class="buttons">
+                        <button onclick="startTimer('ps4')">▶</button>
+                        <button onclick="pauseTimer('ps4')">⏸</button>
+                        <button onclick="resetTimer('ps4')">↻</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Controle de som -->
+    <div class="sound-control">
         <button class="sound-toggle" id="soundToggle" onclick="toggleSound()">
             <i class="fas fa-volume-up"></i>
         </button>
-    </div>
-    
-    <!-- Temporizadores -->
-    <div class="timers-row">
-        <!-- Temporizador Porsche -->
-        <div class="timer-container porsche">
-            <div class="timer-title">
-                <span id="porsche-name">PORSCHE</span>
-                <button class="edit-btn" onclick="openEdit('porsche')">
-                    <i class="far fa-edit"></i>
-                </button>
-            </div>
-            <div class="timer-display" id="porsche-timer">03:00</div>
-            <div class="buttons">
-                <button onclick="startTimer('porsche')">▶</button>
-                <button onclick="pauseTimer('porsche')">⏸</button>
-                <button onclick="resetTimer('porsche')">↻</button>
-            </div>
-        </div>
-        
-        <!-- Temporizador Ferrari -->
-        <div class="timer-container ferrari">
-            <div class="timer-title">
-                <span id="ferrari-name">FERRARI</span>
-                <button class="edit-btn" onclick="openEdit('ferrari')">
-                    <i class="far fa-edit"></i>
-                </button>
-            </div>
-            <div class="timer-display" id="ferrari-timer">03:00</div>
-            <div class="buttons">
-                <button onclick="startTimer('ferrari')">▶</button>
-                <button onclick="pauseTimer('ferrari')">⏸</button>
-                <button onclick="resetTimer('ferrari')">↻</button>
-            </div>
-        </div>
-        
-        <!-- Temporizador Mercedes -->
-        <div class="timer-container mercedes">
-            <div class="timer-title">
-                <span id="mercedes-name">MERCEDES</span>
-                <button class="edit-btn" onclick="openEdit('mercedes')">
-                    <i class="far fa-edit"></i>
-                </button>
-            </div>
-            <div class="timer-display" id="mercedes-timer">03:00</div>
-            <div class="buttons">
-                <button onclick="startTimer('mercedes')">▶</button>
-                <button onclick="pauseTimer('mercedes')">⏸</button>
-                <button onclick="resetTimer('mercedes')">↻</button>
-            </div>
-        </div>
     </div>
     
     <!-- Modal de Alarme -->
@@ -314,26 +537,107 @@
             porsche: { 
                 name: "PORSCHE",
                 time: 180, 
+                originalTime: 180,
                 interval: null, 
                 isRunning: false 
             },
             ferrari: { 
                 name: "FERRARI",
                 time: 180, 
+                originalTime: 180,
                 interval: null, 
                 isRunning: false 
             },
             mercedes: { 
                 name: "MERCEDES",
                 time: 180, 
+                originalTime: 180,
                 interval: null, 
                 isRunning: false 
+            },
+            aviao: {
+                name: "AVIÃO",
+                time: 300,
+                originalTime: 300,
+                interval: null,
+                isRunning: false
+            },
+            ps1: {
+                name: "PS1",
+                time: 600,
+                originalTime: 600,
+                interval: null,
+                isRunning: false
+            },
+            ps2: {
+                name: "PS2",
+                time: 600,
+                originalTime: 600,
+                interval: null,
+                isRunning: false
+            },
+            ps3: {
+                name: "PS3",
+                time: 600,
+                originalTime: 600,
+                interval: null,
+                isRunning: false
+            },
+            ps4: {
+                name: "PS4",
+                time: 600,
+                originalTime: 600,
+                interval: null,
+                isRunning: false
             }
         };
         
         let currentEditing = null;
         let alarmActive = false;
         let soundEnabled = true;
+        let maximizedTimer = null;
+        
+        // Mostrar andar selecionado
+        function showFloor(floor) {
+            document.getElementById('terreo-floor').style.display = floor === 'terreo' ? 'block' : 'none';
+            document.getElementById('ps5-floor').style.display = floor === 'ps5' ? 'block' : 'none';
+            
+            // Atualizar botões ativos
+            const buttons = document.querySelectorAll('.nav-button');
+            buttons.forEach(btn => {
+                btn.classList.toggle('active', 
+                    (floor === 'terreo' && btn.textContent === 'TÉRREO') ||
+                    (floor === 'ps5' && btn.textContent === 'ARENAS PS5')
+                );
+            });
+        }
+        
+        // Alternar entre maximizar/minimizar
+        function toggleMaximize(timerId) {
+            const container = document.getElementById(`${timerId}-container`);
+            const btn = container.querySelector('.maximize-btn');
+            
+            if (maximizedTimer === timerId) {
+                // Minimizar se já estiver maximizado
+                container.classList.remove('maximized');
+                document.getElementById('overlay').style.display = 'none';
+                maximizedTimer = null;
+                btn.innerHTML = '<i class="fas fa-expand"></i>';
+            } else {
+                // Maximizar se estiver minimizado
+                if (maximizedTimer) {
+                    // Minimiza o timer atual se houver um maximizado
+                    const currentContainer = document.getElementById(`${maximizedTimer}-container`);
+                    currentContainer.classList.remove('maximized');
+                    currentContainer.querySelector('.maximize-btn').innerHTML = '<i class="fas fa-expand"></i>';
+                }
+                
+                container.classList.add('maximized');
+                document.getElementById('overlay').style.display = 'block';
+                maximizedTimer = timerId;
+                btn.innerHTML = '<i class="fas fa-compress"></i>';
+            }
+        }
         
         // Alternar som
         function toggleSound() {
@@ -345,7 +649,6 @@
             } else {
                 icon.classList.remove('fa-volume-up');
                 icon.classList.add('fa-volume-mute');
-                // Se estiver tocando, para o som
                 if (alarmActive) {
                     document.getElementById('alarm-sound').pause();
                 }
@@ -354,10 +657,10 @@
         
         // Abre o modal de edição
         function openEdit(brand) {
-            if (alarmActive) return;
+            if (alarmActive || maximizedTimer) return;
             currentEditing = brand;
             document.getElementById('edit-name').value = timers[brand].name;
-            document.getElementById('edit-minutes').value = timers[brand].time / 60;
+            document.getElementById('edit-minutes').value = timers[brand].originalTime / 60;
             document.getElementById('editModal').style.display = 'flex';
         }
         
@@ -373,6 +676,7 @@
             
             if (name && minutes > 0) {
                 timers[currentEditing].name = name;
+                timers[currentEditing].originalTime = minutes * 60;
                 timers[currentEditing].time = minutes * 60;
                 
                 document.getElementById(`${currentEditing}-name`).textContent = name;
@@ -396,6 +700,14 @@
         
         function startTimer(brand) {
             if (timers[brand].isRunning || alarmActive) return;
+            
+            // Se o tempo acabou, reseta para o tempo original
+            if (timers[brand].time <= 0) {
+                timers[brand].time = timers[brand].originalTime;
+                const minutes = Math.floor(timers[brand].time / 60);
+                document.getElementById(`${brand}-timer`).textContent = 
+                    `${minutes.toString().padStart(2, '0')}:00`;
+            }
             
             timers[brand].isRunning = true;
             timers[brand].interval = setInterval(() => {
@@ -437,9 +749,9 @@
         function resetTimer(brand) {
             if (alarmActive) return;
             clearInterval(timers[brand].interval);
-            const minutes = Math.floor(timers[brand].time / 60);
+            timers[brand].time = timers[brand].originalTime;
             timers[brand].isRunning = false;
-            timers[brand].interval = null;
+            const minutes = Math.floor(timers[brand].time / 60);
             document.getElementById(`${brand}-timer`).textContent = 
                 `${minutes.toString().padStart(2, '0')}:00`;
         }
